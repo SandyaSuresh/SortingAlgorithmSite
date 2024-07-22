@@ -1,3 +1,43 @@
+function randomArray(len, mod) {
+    let arr = [];
+    for (let i = 0; i < len; i++) {
+        arr.push(Math.random() * Number.MAX_VALUE % (mod-1) + 1)
+    }
+    return arr;
+}
+
+function animateSort(sortFunction, arr) {
+    let labels = [];
+    arr.forEach(_ => {labels.push("")});
+
+    let bgraph_element = document.getElementById("bargraph")
+    let chart = new Chart(bgraph_element, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'label',
+                data: arr
+            }]
+        }
+    })
+
+    let generator = sortFunction(arr);
+    const timedLoop = () => {
+        setTimeout((_) => {
+            if (!generator.next()["done"]) {
+                chart.update()
+                timedLoop();
+            } else {
+                chart.update();
+            }
+
+        }, 1000)
+    }
+
+    timedLoop();
+}
+
 function bubbleSort(arr){
     for(let i = 0; i < arr.length; i++){
         for(let j = 0; j < arr.length; j++){
@@ -18,7 +58,7 @@ function insertionSort(arr){
     }
 }
 
-function selectionSort(arr){
+function* selectionSort(arr){
     for(let i = 0; i < arr.length; i++){
         let min = arr[i]
         let min_i = i;
@@ -30,6 +70,7 @@ function selectionSort(arr){
         }
         arr[min_i] = arr[i];
         arr[i] = min;
+        yield;
     }
 }
 

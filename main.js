@@ -26,20 +26,26 @@ async function animateSort(sortFunction, arr) {
         }
     })
 
-
+    //console.log(background);
     var i;
     var j;
-    var next = {"done": false}
+    var next = {"value": {}, "done": false}
     let generator = sortFunction(arr);
     while (!next["done"]) {
-        background[i] = "red";
-        background[j] = "red";
+        //background[i] = "red";
+        //console.log(background);
+        for(let i = 0; i < background.length; i++){
+            background[i] = next.value[i];
+        }
+        //console.log(background);
+        //background[j] = "red";
 
         next = generator.next();
-        i = next.value.i;
-        j = next.value.j;
-        background[i] = "pink";
-        background[j] = "pink";
+        //console.log(next);
+        //background = next.value;
+        for(let i = 0; i < background.length; i++){
+            background[i] = next.value[i];
+        }
         await new Promise(_=>{setTimeout(_, 1000)});
         chart.update();
     }
@@ -66,19 +72,27 @@ function insertionSort(arr){
 }
 
 function* selectionSort(arr){
+    let color_arr = [];
     for(let i = 0; i < arr.length; i++){
-        let min = arr[i]
+        arr.forEach(_ => {color_arr.push("red")});
+        let min = arr[i];
         let min_i = i;
-        for(let j = i; j < arr.length; j++){
-            yield {i: i, j: j}; 
+        color_arr[i] = "blue";
+        for(let j = i+1; j < arr.length; j++){
+            color_arr[j] = "pink";
+            yield color_arr; 
             if(arr[j] < min){
+                color_arr[min_i] = min_i == i ? "pink" : "red";
+                color_arr[j] = "blue";
                 min = arr[j];
                 min_i = j;
-            }
+                
+            }else{color_arr[j] = "red";}
         }
         arr[min_i] = arr[i];
         arr[i] = min;
-
+        color_arr[i] = "red";
+        color_arr[min_i] = "red";
     }
 }
 

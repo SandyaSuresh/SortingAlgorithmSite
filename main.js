@@ -6,9 +6,12 @@ function randomArray(len, mod) {
     return arr;
 }
 
-function animateSort(sortFunction, arr) {
+async function animateSort(sortFunction, arr) {
     let labels = [];
+    let background = [];
     arr.forEach(_ => {labels.push("")});
+    arr.forEach(_ => {background.push("red")});
+    background[0] = "blue";
 
     let bgraph_element = document.getElementById("bargraph")
     let chart = new Chart(bgraph_element, {
@@ -17,25 +20,29 @@ function animateSort(sortFunction, arr) {
             labels: labels,
             datasets: [{
                 label: 'label',
-                data: arr
+                data: arr,
+                backgroundColor: background
             }]
         }
     })
 
+
+    var i;
+    var j;
+    var next = {"done": false}
     let generator = sortFunction(arr);
-    const timedLoop = () => {
-        setTimeout((_) => {
-            if (!generator.next()["done"]) {
-                chart.update()
-                timedLoop();
-            } else {
-                chart.update();
-            }
+    while (!next["done"]) {
+        background[i] = "red";
+        background[j] = "red";
 
-        }, 1000)
+        next = generator.next();
+        i = next.value.i;
+        j = next.value.j;
+        background[i] = "pink";
+        background[j] = "pink";
+        await new Promise(_=>{setTimeout(_, 1000)});
+        chart.update();
     }
-
-    timedLoop();
 }
 
 function bubbleSort(arr){
@@ -63,6 +70,7 @@ function* selectionSort(arr){
         let min = arr[i]
         let min_i = i;
         for(let j = i; j < arr.length; j++){
+            yield {i: i, j: j}; 
             if(arr[j] < min){
                 min = arr[j];
                 min_i = j;
@@ -70,7 +78,7 @@ function* selectionSort(arr){
         }
         arr[min_i] = arr[i];
         arr[i] = min;
-        yield;
+
     }
 }
 

@@ -43,9 +43,10 @@ async function animateSort(sortFunction, arr) {
         next = generator.next();
         //console.log(next);
         //background = next.value;
+        if(!next["done"]){
         for(let i = 0; i < background.length; i++){
             background[i] = next.value[i];
-        }
+        }}
         await new Promise(_=>{setTimeout(_, 1000)});
         chart.update();
     }
@@ -94,6 +95,7 @@ function* selectionSort(arr){
         color_arr[i] = "red";
         color_arr[min_i] = "red";
     }
+    yield color_arr;
 }
 
 function cycleSort(){

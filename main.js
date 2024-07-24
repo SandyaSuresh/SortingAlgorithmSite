@@ -98,8 +98,33 @@ function* selectionSort(arr){
     yield color_arr;
 }
 
-function cycleSort(){
+function* cycleSort(arr){
+    for(let i = 0; i < arr.length; i++){
+        cycleSortHelper(arr, arr[i]);
+    }
+}
 
+function cycleSortHelper(arr, val){
+        let corr_pos = 0;
+
+        //determine the position the element in the array should be at
+        for(let j = 0; j < arr.length; j++){
+            if(arr[j] < val){
+                corr_pos++;
+            }
+        }
+
+        //if the value is already at the correct position, break out of the recursion
+        if(arr[corr_pos] == val){
+            return;
+        }
+
+        //replace the value at the correct position with the current value
+        let temp = arr[position];
+        arr[position] = arr[i];
+
+        //recurse on the value that got replaced
+        cycleSortHelper(temp);
 }
 
 function heapSort(arr){

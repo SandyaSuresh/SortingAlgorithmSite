@@ -70,7 +70,8 @@ function* bubbleSort(arr){
         }
 
         if (!swap) {
-            return arr.map(_ => {return COLOR_BASE_GRAPH});
+            yield arr.map(_ => {return COLOR_BASE_GRAPH});
+            return; // returning the color array results in a a false val.next, so the colors don't actually update
         }
     }
 }

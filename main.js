@@ -7,11 +7,8 @@ function randomArray(len, mod) {
 }
 
 async function animateSort(sortFunction, arr) {
-    let labels = [];
-    let background = [];
-    arr.forEach(_ => {labels.push("")});
-    arr.forEach(_ => {background.push("red")});
-    background[0] = "blue";
+    let labels = arr.map(_ => {return ""})
+    let background = arr.map(_ => {return "red"});
 
     let bgraph_element = document.getElementById("bargraph")
     let chart = new Chart(bgraph_element, {
@@ -44,12 +41,32 @@ async function animateSort(sortFunction, arr) {
     }
 }
 
-function bubbleSort(arr){
+function* bubbleSort(arr){
     for(let i = 0; i < arr.length; i++){
-        for(let j = 0; j < arr.length; j++){
-            if(arr[i] > arr[j]){
+        let swap = false;
 
+        for(let j = 0; j < arr.length - 1; j++){
+            let color_arr = arr.map(_ => {return "red"})
+
+            if (arr[j] > arr[j+1]) {
+                color_arr[j] = "blue";
+                color_arr[j+1] = "blue";
+
+                let tmp = arr[j];
+                arr[j] = arr[j+1];
+                arr[j+1] = tmp;
+
+                swap = true;
+            } else {
+                color_arr[j] = "pink";
+                color_arr[j+1] = "pink";
             }
+
+            yield color_arr;
+        }
+
+        if (!swap) {
+            return arr.map(_ => {return "red"});
         }
     }
 }

@@ -26,27 +26,19 @@ async function animateSort(sortFunction, arr) {
         }
     })
 
-    //console.log(background);
-    var i;
-    var j;
-    var next = {"value": {}, "done": false}
     let generator = sortFunction(arr);
-    while (!next["done"]) {
+    for (const colors of generator) {
         //background[i] = "red";
         //console.log(background);
+
         for(let i = 0; i < background.length; i++){
-            background[i] = next.value[i];
+            background[i] = colors[i];
         }
         //console.log(background);
         //background[j] = "red";
 
-        next = generator.next();
         //console.log(next);
         //background = next.value;
-        if(!next["done"]){
-        for(let i = 0; i < background.length; i++){
-            background[i] = next.value[i];
-        }}
         await new Promise(_=>{setTimeout(_, 1000)});
         chart.update();
     }

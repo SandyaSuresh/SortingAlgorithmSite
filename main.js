@@ -1,3 +1,7 @@
+const COLOR_BASE_GRAPH = "red";
+const COLOR_MAX_VALUE_FOUND = "blue";
+const COLOR_SWAP_POSITIONS = "pink";
+
 function randomArray(len, mod) {
     let arr = [];
     for (let i = 0; i < len; i++) {
@@ -8,7 +12,7 @@ function randomArray(len, mod) {
 
 async function animateSort(sortFunction, arr) {
     let labels = arr.map(_ => {return ""})
-    let background = arr.map(_ => {return "red"});
+    let background = arr.map(_ => {return COLOR_BASE_GRAPH});
 
     let bgraph_element = document.getElementById("bargraph")
     let chart = new Chart(bgraph_element, {
@@ -25,14 +29,14 @@ async function animateSort(sortFunction, arr) {
 
     let generator = sortFunction(arr);
     for (const colors of generator) {
-        //background[i] = "red";
+        //background[i] = COLOR_BASE_GRAPH;
         //console.log(background);
 
         for(let i = 0; i < background.length; i++){
             background[i] = colors[i];
         }
         //console.log(background);
-        //background[j] = "red";
+        //background[j] = COLOR_BASE_GRAPH;
 
         //console.log(next);
         //background = next.value;
@@ -46,11 +50,11 @@ function* bubbleSort(arr){
         let swap = false;
 
         for(let j = 0; j < arr.length - 1; j++){
-            let color_arr = arr.map(_ => {return "red"})
+            let color_arr = arr.map(_ => {return COLOR_BASE_GRAPH})
 
             if (arr[j] > arr[j+1]) {
-                color_arr[j] = "blue";
-                color_arr[j+1] = "blue";
+                color_arr[j] = COLOR_MAX_VALUE_FOUND;
+                color_arr[j+1] = COLOR_MAX_VALUE_FOUND;
 
                 let tmp = arr[j];
                 arr[j] = arr[j+1];
@@ -58,15 +62,15 @@ function* bubbleSort(arr){
 
                 swap = true;
             } else {
-                color_arr[j] = "pink";
-                color_arr[j+1] = "pink";
+                color_arr[j] = COLOR_SWAP_POSITIONS;
+                color_arr[j+1] = COLOR_SWAP_POSITIONS;
             }
 
             yield color_arr;
         }
 
         if (!swap) {
-            return arr.map(_ => {return "red"});
+            return arr.map(_ => {return COLOR_BASE_GRAPH});
         }
     }
 }
@@ -84,25 +88,25 @@ function insertionSort(arr){
 function* selectionSort(arr){
     let color_arr = [];
     for(let i = 0; i < arr.length; i++){
-        arr.forEach(_ => {color_arr.push("red")});
+        arr.forEach(_ => {color_arr.push(COLOR_BASE_GRAPH)});
         let min = arr[i];
         let min_i = i;
-        color_arr[i] = "blue";
+        color_arr[i] = COLOR_MAX_VALUE_FOUND;
         for(let j = i+1; j < arr.length; j++){
-            color_arr[j] = "pink";
+            color_arr[j] = COLOR_SWAP_POSITIONS;
             yield color_arr; 
             if(arr[j] < min){
-                color_arr[min_i] = min_i == i ? "pink" : "red";
-                color_arr[j] = "blue";
+                color_arr[min_i] = min_i == i ? COLOR_SWAP_POSITIONS : COLOR_BASE_GRAPH;
+                color_arr[j] = COLOR_MAX_VALUE_FOUND;
                 min = arr[j];
                 min_i = j;
                 
-            }else{color_arr[j] = "red";}
+            }else{color_arr[j] = COLOR_BASE_GRAPH;}
         }
         arr[min_i] = arr[i];
         arr[i] = min;
-        color_arr[i] = "red";
-        color_arr[min_i] = "red";
+        color_arr[i] = COLOR_BASE_GRAPH;
+        color_arr[min_i] = COLOR_BASE_GRAPH;
     }
     yield color_arr;
 }

@@ -1,13 +1,26 @@
 <!DOCTYPE html>
 <html>
+    
     <head></head>
 
     <div>
         <canvas id="bargraph"></canvas>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="main.js" onload="animateSort(selectionSort, randomArray(10, 20))"></script>
+    <body>
+        <select name="selection_type" id="select_selection">
+            <option value="bubbleSort">Bubble Sort</option>
+            <option value="insertionSort">Insertion Sort</option>
+            <option value="selectionSort">Selection Sort</option>
+            <option value="cycleSort">Cycle Sort</option>
+            <option value="heapSort">Heap Sort</option>
+            <option value="mergeSort">Merge Sort</option>
+        </select>
+    </body>
 
+    
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="main.js" onload="animateSort(bubbleSort, randomArray(10, 20))"></script>
 
 </html>

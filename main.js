@@ -1,6 +1,25 @@
 const COLOR_BASE_GRAPH = "red";
 const COLOR_MAX_VALUE_FOUND = "blue";
 const COLOR_SWAP_POSITIONS = "pink";
+var chart = new Chart(document.getElementById("bargraph"), {
+                type: 'bar',
+                data: {
+                    labels: ["a", "b", "c", "d", "e", "f", "g", "h", "i"],
+                    datasets: [{
+                        label: 'label',
+                        data: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
+                    }]
+                }
+            })
+
+
+document.getElementById("select_selection").addEventListener("change", function(){
+    //chart.destroy();
+    let sort = document.getElementById("select_selection").value;
+    animateSort(eval(sort), randomArray(10, 20));
+
+});
+
 
 function randomArray(len, mod) {
     let arr = [];
@@ -11,11 +30,16 @@ function randomArray(len, mod) {
 }
 
 async function animateSort(sortFunction, arr) {
-    let labels = arr.map(_ => {return ""})
+    //console.log(sortFunction.type + " " + sortFunction);
+    let labels = arr.map(_ => {return ""});
     let background = arr.map(_ => {return COLOR_BASE_GRAPH});
 
-    let bgraph_element = document.getElementById("bargraph")
-    let chart = new Chart(bgraph_element, {
+    let bgraph_element = document.getElementById("bargraph");
+    if(chart != undefined){
+        chart.destroy();
+    }
+
+    chart = new Chart(bgraph_element, {
         type: 'bar',
         data: {
             labels: labels,
